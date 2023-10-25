@@ -50,12 +50,21 @@ import { SearchBar } from './SearchBar'
 function App() {
   const [showStocked, setShowStocked] = useState(false);
   const [search, setSearch] = useState("");
+  const visibleProducts = Produits.filter(produits => {
+    if (showStocked && !produits.stocked) {
+      return false;
+    }
+    if (search && !produits.name.includes(search)) {
+      return false;
+    }
+    return true;
+  })
   return  <>
   <div className='mb-3 col-lg-6 col-md-8 col-8'>
   <SearchBar search={search} onSetSearch={setSearch} showStocked={showStocked} onshowStocked={setShowStocked}/>
   </div>
   <div className='mb-3 col-lg-6 col-md-8 col-8'>
-  <ProductsTable products={Produits}/>  
+  <ProductsTable products={visibleProducts}/>  
   </div>
   </>
 }
